@@ -24,8 +24,6 @@ export default function RootLayout({
         <ConvexClerkProvider>
           {children}
         </ConvexClerkProvider>
-          
-        
       </body>
     </html>
   );

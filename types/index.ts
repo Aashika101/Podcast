@@ -56,9 +56,8 @@ export interface GeneratePodcastProps {
   voicePrompt: string;
   setVoicePrompt: Dispatch<SetStateAction<string>>;
   setAudioDuration: Dispatch<SetStateAction<number>>;
-  handleCorrectText: () => Promise<void>;
-  correctedText: string;
-  setCorrectedText: Dispatch<SetStateAction<string>>;
+  improvedText?: string;
+  setImprovedText?: Dispatch<SetStateAction<string>>;
 }
 
 export interface GenerateThumbnailProps {

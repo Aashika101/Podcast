@@ -12,11 +12,11 @@ export default function RootLayout({
 }>) {
   return (
     <div className="relative flex flex-col">
-        <main className="relative flex bg-black-1">
+        <main className="relative flex bg-black-3">
            <LeftSidebar />
 
            <section className="flex min-h-screen flex-1 flex-col px-4 sm:x-14">
-            <div className="mx-auto flex w-full max-w-5xl flex-col max-sm:px-4">
+            <div className="mx-auto flex w-full max-w-6xl flex-col max-sm:px-4">
               <div className=" flex h-16 items-center justify-between md:hidden">
                 <Image src="/icons/logos.svg"
                 width={30}

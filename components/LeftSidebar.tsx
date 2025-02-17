@@ -51,7 +51,7 @@ const LeftSidebar = () => {
       </SignedOut>
       <SignedIn>
         <div className="flex-center w-full pb-14 max-lg:px-4 lg:pr-8">
-          <Button className="text-16 w-full bg-red-1 font-extrabold" onClick={() => signOut(() => router.push('/'))}>
+          <Button className="text-16 text-black-1 w-full bg-red-1 font-extrabold" onClick={() => signOut(() => router.push('/'))}>
             Log Out
           </Button>
         </div>
