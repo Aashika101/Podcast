@@ -10,6 +10,7 @@ export const fetchGenre = async (text: string) => {
         body: JSON.stringify({ description: text }),
       });
       const data = await response.json();
+      console.log('fetchGenre:', data);
       return data.predicted_genre;
     } catch (error) {
       console.error('Error fetching genre:', error);

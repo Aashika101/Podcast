@@ -38,7 +38,7 @@ export interface PodcastProps {
   authorImageUrl: string;
   voicePrompt: string;
   imagePrompt: string | null;
-  voiceType: string;
+  voiceTypes: string[];
   audioDuration: number;
   views: number;
 }
@@ -49,7 +49,7 @@ export interface ProfilePodcastProps {
 }
 
 export interface GeneratePodcastProps {
-  voiceType: string;
+  voiceTypes: string[];
   setAudio: Dispatch<SetStateAction<string>>;
   audio: string;
   setAudioStorageId: Dispatch<SetStateAction<Id<"_storage"> | null>>;
@@ -60,6 +60,7 @@ export interface GeneratePodcastProps {
   setImprovedText?: Dispatch<SetStateAction<string>>;
   genre?: string;
   setGenre: (genre: string) => void;
+  setVoiceTypes?: (voice: string[]) => void;
 }
 
 export interface GenerateThumbnailProps {
