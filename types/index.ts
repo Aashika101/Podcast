@@ -1,5 +1,4 @@
 import { Dispatch, SetStateAction } from "react";
-
 import { Id } from "@/convex/_generated/dataModel";
 
 export interface EmptyStateProps {
@@ -30,6 +29,7 @@ export interface PodcastProps {
   user: Id<"users">;
   podcastTitle: string;
   podcastDescription: string;
+  podcastGenre: string; 
   audioUrl: string | null;
   imageUrl: string | null;
   imageStorageId: Id<"_storage"> | null;
@@ -58,6 +58,8 @@ export interface GeneratePodcastProps {
   setAudioDuration: Dispatch<SetStateAction<number>>;
   improvedText?: string;
   setImprovedText?: Dispatch<SetStateAction<string>>;
+  genre?: string;
+  setGenre: (genre: string) => void;
 }
 
 export interface GenerateThumbnailProps {
@@ -76,6 +78,7 @@ export interface LatestPodcastCardProps {
   audioUrl: string;
   author: string;
   views: number;
+  genre: string;
   podcastId: Id<"podcasts">;
 }
 
@@ -90,6 +93,7 @@ export interface PodcastDetailPlayerProps {
   audioStorageId: Id<"_storage">;
   authorImageUrl: string;
   authorId: string;
+  genre: string;
 }
 
 export interface AudioProps {
@@ -98,6 +102,7 @@ export interface AudioProps {
   author: string;
   imageUrl: string;
   podcastId: string;
+  genre: string;
 }
 
 export interface AudioContextType {
@@ -110,6 +115,7 @@ export interface PodcastCardProps {
   title: string;
   description: string;
   podcastId: Id<"podcasts">;
+  genre: string;
 }
 
 export interface CarouselProps {

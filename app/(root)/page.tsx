@@ -22,14 +22,15 @@ const Home = () => {
 
 
           <div className='podcast_grid'>
-          {podcastData.map(({ id, title, description, imgURL}) => (
-          <PodcastCard 
-          key={id}
-          imgUrl={imgURL}
-          title={title}
-          description={description}
-          podcastId={id}
-          />
+        {podcastData.map(({ id, title, description, imgURL, genre }) => (
+        <PodcastCard 
+        key={id}
+        imgUrl={imgURL}
+        title={title}
+        description={description}
+        genre={genre}
+        podcastId={id}
+        />
         ))}
           </div>
        

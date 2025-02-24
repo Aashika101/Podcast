@@ -28,12 +28,14 @@ import { Textarea } from "@/components/ui/textarea";
 import GeneratePodcast from "@/components/GeneratePodcast";
 import GenerateThumbnail from "@/components/GenerateThumbnail";
 import { Id } from "@/convex/_generated/dataModel";
+import { genres } from "@/constants";
 
 const voiceCategories = ['alloy', 'echo', 'fable', 'onxy', 'nova', 'shimmer'];
 
 const formSchema = z.object({
   podcastTitle: z.string().min(2),
   podcastDescription: z.string().min(2),
+  podcastGenre: z.string().min(2),
 });
 
 const CreatePodcast = () => {
@@ -49,8 +51,11 @@ const CreatePodcast = () => {
   const [voiceType, setVoiceType] = useState<string | null>(null);
 
   const [improvedText, setImprovedText] = useState('');
+  const [genre, setGenre] = useState<string | null>(null);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
@@ -58,6 +63,7 @@ const CreatePodcast = () => {
     defaultValues: {
       podcastTitle: "",
       podcastDescription: "",
+      podcastGenre: "",
     },
   });
 
@@ -84,7 +90,8 @@ const CreatePodcast = () => {
                 <FormItem className="flex flex-col gap-2.5">
                   <FormLabel className="text-16 font-bold text-white-1">Title</FormLabel>
                   <FormControl>
-                    <Input className="input-class focus-visible:ring-red-1" placeholder="Selfcare Podcast" {...field} />
+                    <Input className="input-class focus-visible:ring-red-1" placeholder="Selfcare Podcast" 
+                     autoComplete="off" {...field} />
                   </FormControl>
                   <FormMessage className="text-white-1" />
                 </FormItem>
@@ -131,6 +138,35 @@ const CreatePodcast = () => {
                 </FormItem>
               )}
             />
+
+            <FormField
+              control={form.control}
+              name="podcastGenre"
+              render={({ field }) => (
+                <FormItem className="flex flex-col gap-2.5">
+                  <FormLabel className="text-16 font-bold text-white-1">Genre</FormLabel>
+                  <FormControl>
+                    <Select onValueChange={(value) => {
+                      field.onChange(value);
+                      setGenre(value); 
+                    }}>
+                      <SelectTrigger className={cn('text-16 w-full border-none focus-visible:ring-offset-red-1 bg-black-1 text-gray-1')}>
+                        <SelectValue placeholder="Select Genre" />
+                      </SelectTrigger>
+                      <SelectContent className="text-16 border-none bg-black-1 font-bold text-white-1 focus:ring-red-1">
+                        {genres.map((genre) => (
+                          <SelectItem key={genre} value={genre} className="capitalize focus:bg-red-1">
+                            {genre}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                  <FormMessage className="text-white-1" />
+                </FormItem>
+              )}
+            />   
+
           </div> 
 
           <div className="flex flex-col pt-5">
@@ -143,7 +179,8 @@ const CreatePodcast = () => {
               setVoicePrompt={setVoicePrompt}
               setAudioDuration={setAudioDuration}
               improvedText={improvedText} 
-              setImprovedText={setImprovedText} 
+              setImprovedText={setImprovedText}
+              setGenre={setGenre}
             /> 
 
             <GenerateThumbnail 

@@ -9,9 +9,11 @@ import { v4 as uuidv4 } from 'uuid';
 import { useUploadFiles } from '@xixixao/uploadstuff/react';
 import { useToast } from '@/hooks/use-toast';
 import { Label } from './ui/label';
+import { genres } from '@/constants';
+import { fetchGenre } from '@/utils/genreUtils';
 
 const useGeneratePodcast = ({
-  setAudio, voiceType, voicePrompt, setAudioStorageId, setImprovedText
+  setAudio, voiceType, voicePrompt, setAudioStorageId, setImprovedText, genre, setGenre
 }: GeneratePodcastProps) => {
   const [isGenerating, setIsGenerating] = useState(false);
   const { toast } = useToast();
@@ -36,6 +38,13 @@ const useGeneratePodcast = ({
     }
 
     try {
+      // Determine genre if not selected
+      if (!genre) {
+        const determinedGenre = await fetchGenre(finalText);
+        console.log('Predicted Genre:', determinedGenre);
+        setGenre(determinedGenre || genres[0]); 
+      };
+
       const response = await getPodcastAudio({
         voice: voiceType,
         input: finalText,
@@ -70,7 +79,9 @@ const useGeneratePodcast = ({
       const improvedTextResponse = await improveContentQuality({
         input: content,
       });
-      setImprovedText(improvedTextResponse || '');
+      if (setImprovedText) {
+        setImprovedText(improvedTextResponse || '');
+      }
     } catch (error) {
       toast({
         title: "Error improving content",
@@ -91,12 +102,16 @@ const GeneratePodcast = (props: GeneratePodcastProps) => {
   const applyImprovedText = () => {
     props.setVoicePrompt(props.improvedText || '');
     setUseImprovedText(false);
-    props.setImprovedText('');
+    if (props.setImprovedText) {
+      props.setImprovedText('');
+    }
   };
 
   const discardImprovedText = () => {
     setUseImprovedText(false);
-    props.setImprovedText('');
+    if (props.setImprovedText) {
+      props.setImprovedText('');
+    }
   };
 
   return (
