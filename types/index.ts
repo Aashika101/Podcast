@@ -61,6 +61,7 @@ export interface GeneratePodcastProps {
   genre?: string;
   setGenre: (genre: string) => void;
   setVoiceTypes?: (voice: string[]) => void;
+  setGeneratedScript: Dispatch<SetStateAction<string>>; // Add this line
 }
 
 export interface GenerateThumbnailProps {

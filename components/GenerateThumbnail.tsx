@@ -1,7 +1,6 @@
 import React, { useRef, useState } from 'react'
 import { Button } from './ui/button'
 import { cn } from '@/lib/utils';
-import { Label } from './ui/label';
 import { Textarea } from './ui/textarea';
 import { GenerateThumbnailProps } from '@/types';
 import { Loader } from 'lucide-react';

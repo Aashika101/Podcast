@@ -11,10 +11,12 @@ import { useToast } from '@/hooks/use-toast';
 import { Label } from './ui/label';
 import { genres, getVoicesForGenre } from '@/constants';
 import { fetchGenre } from '@/utils/genreUtils';
+import GeneratePodcastScript from './GeneratePodcastScript';
+import { cn } from '@/lib/utils';
 
 const useGeneratePodcast = ({
-  setAudio, voiceTypes, voicePrompt, setAudioStorageId, setImprovedText, genre, setGenre, setVoiceTypes
-}: GeneratePodcastProps) => {
+  setAudio, voiceTypes, voicePrompt, setAudioStorageId, setImprovedText, genre, setGenre, setVoiceTypes, setGeneratedScript
+}: GeneratePodcastProps & { setGeneratedScript: (script: string) => void }) => {
   const [isGenerating, setIsGenerating] = useState(false);
   const { toast } = useToast();
 
@@ -30,7 +32,7 @@ const useGeneratePodcast = ({
     setIsGenerating(true);
     setAudio('');
 
-    if (!voicePrompt) {
+    if (!finalText) {
       toast({
         title: "Provide a script to generate a podcast",
       });
@@ -103,6 +105,7 @@ const useGeneratePodcast = ({
 
       const audioUrl = await getAudioUrl({ storageId });
       setAudio(audioUrl!);
+      setGeneratedScript(''); // Clear the generated script
       setIsGenerating(false);
       toast({
         title: "Podcast generated successfully",
@@ -137,10 +140,12 @@ const useGeneratePodcast = ({
 };
 
 const GeneratePodcast = (props: GeneratePodcastProps) => {
-  const { isGenerating, generatePodcast, handleImproveContent } = useGeneratePodcast(props);
+  const [generatedScript, setGeneratedScript] = useState('');
+  const { isGenerating, generatePodcast, handleImproveContent } = useGeneratePodcast({ ...props, setGeneratedScript });
   const [useImprovedText, setUseImprovedText] = useState(false);
+  const [showGenerateScript, setShowGenerateScript] = useState(false);
 
-  const finalText = useImprovedText ? props.improvedText || '' : props.voicePrompt;
+  const finalText = useImprovedText ? props.improvedText || '' : (props.voicePrompt || generatedScript);
 
   useEffect(() => {
     if (props.genre) {
@@ -170,23 +175,64 @@ const GeneratePodcast = (props: GeneratePodcastProps) => {
 
   return (
     <div>
-      <div className="flex flex-col gap-2.5 ">
-        <Label className="text-16 font-bold text-white-1">Script to generate podcast</Label>
-        <div className="relative">
-          <Textarea
-            className="input-class mt-5 font-light focus-visible:ring-red-1 pr-10"
-            placeholder="Provide text to generate audio"
-            rows={5}
-            value={props.voicePrompt}
-            onChange={(e) => props.setVoicePrompt(e.target.value)}
-          />
-          <MessageCircle
-            size={25}
-            className="absolute bottom-3 right-3 text-gray-400 bg-red-1 p-1 rounded-full transition-all duration-500 hover:bg-red-600"
-            onClick={() => handleImproveContent(props.voicePrompt)}
-          />
-        </div>
+      <div className="generate_podcast inline-flex bg-black-1 p-2 rounded-md outline outline-black-6">
+        <Button
+          type="button"
+          variant="plain"
+          onClick={() => setShowGenerateScript(false)}
+          className={cn('', {
+            'bg-black-6': !showGenerateScript
+          })}
+        >
+          Script to generate podcast
+        </Button>
+
+        <Button
+          type="button"
+          variant="plain"
+          onClick={() => setShowGenerateScript(true)}
+          className={cn('', {
+            'bg-black-6': showGenerateScript
+          })}
+        >
+          AI Prompt to generate Podcast script
+        </Button>
       </div>
+
+      {showGenerateScript ? (
+        <div className="flex flex-col gap-2.5 mt-3">
+          <GeneratePodcastScript setGeneratedScript={setGeneratedScript} />
+          {generatedScript && (
+            <div className="mt-4">
+              <Label className="text-16 font-bold text-white-1">Generated Script</Label>
+              <Textarea
+                className="input-class mt-2 font-light focus-visible:ring-red-1"
+                rows={10}
+                value={generatedScript}
+                onChange={(e) => setGeneratedScript(e.target.value)}
+              />
+            </div>
+          )}
+        </div>
+      ) : (
+        <div className="flex flex-col gap-2.5 mt-4">
+          <div className="relative">
+            <Textarea
+              className="input-class mt-5 font-light focus-visible:ring-red-1 pr-10"
+              placeholder="Provide text to generate audio"
+              rows={5}
+              value={props.voicePrompt}
+              onChange={(e) => props.setVoicePrompt(e.target.value)}
+            />
+            <MessageCircle
+              size={25}
+              className="absolute bottom-3 right-3 text-gray-400 bg-red-1 p-1 rounded-full transition-all duration-500 hover:bg-red-600"
+              onClick={() => handleImproveContent(props.voicePrompt)}
+            />
+          </div>
+        </div>
+      )}
+
       {props.improvedText && (
         <div className="mt-2 relative">
           <Label className="text-16 font-bold text-white-1">Improved Content</Label>

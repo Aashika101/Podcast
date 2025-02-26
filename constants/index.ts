@@ -19,6 +19,8 @@ export const sidebarLinks = [
       route: "/profile",
       label: "My Profile",
     },
+  
+
   ];
 
   export const genres = [

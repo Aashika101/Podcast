@@ -1,8 +1,9 @@
 "use client";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { Loader } from "lucide-react";
+import { Link, Loader } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -32,6 +33,7 @@ const CreatePodcast = () => {
   const [improvedText, setImprovedText] = useState('');
   const [genre, setGenre] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [generatedScript, setGeneratedScript] = useState('');
 
   // Define your form
   const form = useForm<z.infer<typeof formSchema>>({
@@ -112,7 +114,8 @@ const CreatePodcast = () => {
               improvedText={improvedText}
               setImprovedText={setImprovedText}
               setGenre={setGenre}
-              setVoiceTypes={setVoiceTypes} 
+              setVoiceTypes={setVoiceTypes}
+              setGeneratedScript={setGeneratedScript} 
             />
             <GenerateThumbnail
               setImage={setImageUrl}
@@ -132,7 +135,7 @@ const CreatePodcast = () => {
                   'Submit & Publish Podcast'
                 )}
               </Button>
-            </div>
+            </div> 
           </div>
         </form>
       </Form>
