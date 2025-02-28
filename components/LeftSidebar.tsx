@@ -33,8 +33,6 @@ const LeftSidebar = () => {
             {
               'bg-nav-focus border-r-4 border-red-1': isActive
             }
-            // isActive ? 'bg-active-class text-white' : 'text-gray-400'
-
           )}>
             <Image src={imgURL} alt={label} width={24} height={24}/>
             <p>{label}</p>

@@ -40,6 +40,7 @@ export interface PodcastProps {
   imagePrompt: string | null;
   voiceTypes: string[];
   audioDuration: number;
+  genre: string;
   views: number;
 }
 
@@ -61,7 +62,9 @@ export interface GeneratePodcastProps {
   genre?: string;
   setGenre: (genre: string) => void;
   setVoiceTypes?: (voice: string[]) => void;
-  setGeneratedScript: Dispatch<SetStateAction<string>>; // Add this line
+  setGeneratedScript: Dispatch<SetStateAction<string>>; 
+  onFinalTextChange?: (finalText: string) => void;
+  setGeneratedGenre?: (genre: string) => void;
 }
 
 export interface GenerateThumbnailProps {

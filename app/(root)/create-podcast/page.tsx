@@ -15,14 +15,18 @@ import GeneratePodcast from "@/components/GeneratePodcast";
 import GenerateThumbnail from "@/components/GenerateThumbnail";
 import { Id } from "@/convex/_generated/dataModel";
 import { genres, getVoicesForGenre } from "@/constants";
+import { useToast } from "@/hooks/use-toast";
+import { Authenticated, useMutation } from "convex/react";
+import { api } from "@/convex/_generated/api";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   podcastTitle: z.string().min(2),
   podcastDescription: z.string().min(2),
-  podcastGenre: z.string().min(2),
 });
 
 const CreatePodcast = () => {
+  const router = useRouter();
   const [imagePrompt, setImagePrompt] = useState('');
   const [imageStorageId, setImageStorageId] = useState<Id<"_storage"> | null>(null);
   const [imageUrl, setImageUrl] = useState('');
@@ -34,6 +38,13 @@ const CreatePodcast = () => {
   const [genre, setGenre] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [generatedScript, setGeneratedScript] = useState('');
+  const [generatedGenre, setGeneratedGenre] = useState('');
+  const [generatedText, setGeneratedText] = useState('');
+  
+
+  const createPodcast = useMutation(api.podcasts.createPodcast);
+
+  const { toast } = useToast();
 
   // Define your form
   const form = useForm<z.infer<typeof formSchema>>({
@@ -41,15 +52,100 @@ const CreatePodcast = () => {
     defaultValues: {
       podcastTitle: "",
       podcastDescription: "",
-      podcastGenre: "",
     },
   });
 
   // Define a submit handler
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
-  }
+  async function onSubmit(data: z.infer<typeof formSchema>) {
+    try {
+      console.log("Form data received:", data);
+      setIsSubmitting(true);
 
+      // Validate required fields
+      if (!data.podcastTitle || !data.podcastDescription) {
+        console.log("Validation error: Missing required fields.");
+        toast({
+          title: "Validation Error",
+          description: "Please fill in all required fields.",
+          variant: "destructive",
+        });
+        setIsSubmitting(false);
+        return;
+      }
+      if (!audioUrl || !audioStorageId) {
+        console.log("Validation error: Please generate and upload the podcast audio.");
+        toast({
+          title: "Validation Error",
+          description: "Please generate and upload the podcast audio.",
+          variant: "destructive",
+        });
+        setIsSubmitting(false);
+        return;
+      }
+      if (!imageUrl || !imageStorageId) {
+        console.log("Validation error: Please generate and upload the podcast thumbnail.");
+        toast({
+          title: "Validation Error",
+          description: "Please generate and upload the podcast thumbnail.",
+          variant: "destructive",
+        });
+        setIsSubmitting(false);
+        return;
+      }
+
+      console.log("Submitting data:", {
+        podcastTitle: data.podcastTitle,
+        podcastDescription: data.podcastDescription,
+        audioUrl,
+        imageUrl,
+        imagePrompt: imagePrompt || '',
+        audioDuration,
+        finalText: generatedText,
+        voicePrompt,
+        views: 0,
+        audioStorageId: audioStorageId!,
+        imageStorageId: imageStorageId!,
+        voiceTypes: genre ? getVoicesForGenre(genre) : [],
+      });
+
+      console.log("reached bloody here");
+      const podcast = await createPodcast({
+        podcastTitle: data.podcastTitle,
+        podcastDescription: data.podcastDescription,
+        audioUrl,
+        imageUrl,
+        imagePrompt: imagePrompt || '',
+        audioDuration,
+        finalText: generatedText,
+        voicePrompt,
+        views: 0,
+        audioStorageId: audioStorageId!,
+        imageStorageId: imageStorageId!,
+        voiceTypes: genre ? getVoicesForGenre(genre) : [],
+        podcastGenre: generatedGenre,
+      });
+
+      console.log("Podcast created:", podcast);
+
+      toast({
+        title: "Success",
+        description: "Podcast created successfully.",
+      });
+      setIsSubmitting(false);
+      router.push('/');
+      console.log("Form passed validation.");
+
+    } catch (error) {
+      console.error("Error submitting podcast:", error);
+      toast({
+        title: "Submission Error",
+        description: (error as any).message || "An error occurred while submitting the podcast.",
+        variant: "destructive",
+      });
+      setIsSubmitting(false);
+    }
+  }
+  
   // Automatically select the voices based on the genre
   const selectedVoices = genre ? getVoicesForGenre(genre) : [];
 
@@ -81,7 +177,7 @@ const CreatePodcast = () => {
                 <FormMessage className="text-white-1" />
               </FormItem>
             )} />
-            <FormField control={form.control} name="podcastGenre" render={({ field }) => (
+            {/* <FormField control={form.control} name="podcastGenre" render={({ field }) => (
               <FormItem className="flex flex-col gap-2.5">
                 <FormLabel className="text-16 font-bold text-white-1">Genre</FormLabel>
                 <FormControl>
@@ -100,7 +196,7 @@ const CreatePodcast = () => {
                 </FormControl>
                 <FormMessage className="text-white-1" />
               </FormItem>
-            )} />
+            )} /> */}
           </div>
           <div className="flex flex-col pt-5">
             <GeneratePodcast
@@ -115,7 +211,9 @@ const CreatePodcast = () => {
               setImprovedText={setImprovedText}
               setGenre={setGenre}
               setVoiceTypes={setVoiceTypes}
-              setGeneratedScript={setGeneratedScript} 
+              setGeneratedScript={setGeneratedScript}
+              onFinalTextChange={setGeneratedText}
+              setGeneratedGenre={setGeneratedGenre}
             />
             <GenerateThumbnail
               setImage={setImageUrl}
@@ -132,7 +230,7 @@ const CreatePodcast = () => {
                     <Loader size={20} className="animate-spin ml-2" />
                   </>
                 ) : (
-                  'Submit & Publish Podcast'
+                  'Submit and Publish Podcast'
                 )}
               </Button>
             </div> 

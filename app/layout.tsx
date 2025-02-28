@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import ConvexClerkProvider from "./providers/ConvexClerkProvider";
+import CreatePodcast from "./(root)/create-podcast/page";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -13,11 +14,11 @@ export const metadata: Metadata = {
   }
 };
 
-export default function RootLayout({
+const RootLayout = ({
   children,
 }: Readonly<{
   children: React.ReactNode;
-}>) {
+}>) => {
   return (
     <html lang="en">
       <body className={inter.className}>
@@ -28,3 +29,5 @@ export default function RootLayout({
     </html>
   );
 }
+
+export default RootLayout;

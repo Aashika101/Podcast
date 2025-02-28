@@ -15,8 +15,8 @@ import GeneratePodcastScript from './GeneratePodcastScript';
 import { cn } from '@/lib/utils';
 
 const useGeneratePodcast = ({
-  setAudio, voiceTypes, voicePrompt, setAudioStorageId, setImprovedText, genre, setGenre, setVoiceTypes, setGeneratedScript
-}: GeneratePodcastProps & { setGeneratedScript: (script: string) => void }) => {
+  setAudio, setGeneratedGenre, voiceTypes, voicePrompt, setAudioStorageId, setImprovedText, genre, setGenre, setVoiceTypes, setGeneratedScript, 
+}: GeneratePodcastProps & { setGeneratedScript: (script: string) => void, setGeneratedGenre?: (genre: string) => void }) => {
   const [isGenerating, setIsGenerating] = useState(false);
   const { toast } = useToast();
 
@@ -29,6 +29,7 @@ const useGeneratePodcast = ({
   const getAudioUrl = useMutation(api.podcasts.getUrl);
 
   const generatePodcast = async (finalText: string) => {
+    // return;
     setIsGenerating(true);
     setAudio('');
 
@@ -53,6 +54,7 @@ const useGeneratePodcast = ({
           console.error('Failed to determine genre');
           setGenre(genres[0]);
           genre = genres[0];
+          setGeneratedGenre && setGeneratedGenre(genre);
         }
       }
 
@@ -146,6 +148,7 @@ const GeneratePodcast = (props: GeneratePodcastProps) => {
   const [showGenerateScript, setShowGenerateScript] = useState(false);
 
   const finalText = useImprovedText ? props.improvedText || '' : (props.voicePrompt || generatedScript);
+  props.onFinalTextChange && props.onFinalTextChange(finalText);
 
   useEffect(() => {
     if (props.genre) {

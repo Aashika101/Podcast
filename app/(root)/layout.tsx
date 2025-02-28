@@ -17,13 +17,12 @@ export default function RootLayout({
 
            <section className="flex min-h-screen flex-1 flex-col px-4 sm:x-14">
             <div className="mx-auto flex w-full max-w-6xl flex-col max-sm:px-4">
-              <div className=" flex h-16 items-center justify-between md:hidden">
+              <div className="flex h-16 items-center justify-between md:hidden">
                 <Image src="/icons/logos.svg"
                 width={30}
                 height={30}
                 alt="menu icon" 
                 />
-
                 <MobileNav />
 
               </div>
