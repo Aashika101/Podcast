@@ -1,0 +1,68 @@
+'use client'
+
+import EmptyState from "@/components/EmptyState";
+import LoaderSpinner from "@/components/LoaderSpinner";
+import PodcastCard from "@/components/PodcastCard";
+import ProfileCard from "@/components/ProfileCard";
+import { api } from "@/convex/_generated/api";
+import { useQuery } from "convex/react";
+import React from "react";
+
+const ProfilePage = ({
+    params, 
+}: {
+    params: {
+        profileId: string;
+    };
+}) => {
+    const user = useQuery(api.users.getUserById, {
+        clerkId: params.profileId,
+    });
+
+    const podcastsData = useQuery(api.podcasts.getPodcastByAuthorId, {
+        authorId: params.profileId,
+    })
+
+    if (!user || !podcastsData) return <LoaderSpinner />;
+
+    return (
+        <section className='mt-9 flex flex-col'>
+            <h1 className='text-20 font-bold text-white-1'
+            >Podcaster Profile</h1>
+            <div>
+                <ProfileCard 
+                  podcastData={podcastsData!}
+                  imageUrl={user?.imageUrl!}
+                  userFirstName={user?.name!}
+                />
+            </div>
+            <section className='mt-9 flex flex-col gap-5'>
+                <h1 className='text-20 font-bold text-white-1'>All Podcasts</h1>
+                {podcastsData && podcastsData.podcasts.length 
+                > 0 ? (
+                    <div className='podcast_grid'>
+                        {podcastsData?.podcasts 
+                        ?.slice(0, 4)
+                        .map((podcast : any) => (
+                            <PodcastCard 
+                              key={podcast.id}
+                              imgUrl={podcast.imageUrl!}
+                              title={podcast.podcastTitle!}
+                              description={podcast.podcastDescription!}
+                              genre={podcast.genre}
+                              podcastId={podcast.id}
+                            />
+                        ))}
+                    </div>
+                ) : (
+                    <EmptyState 
+                    title='You have not created any podcasts yet'
+                    buttonLink="/create-podcast"
+                    />
+                )}
+            </section>
+        </section>
+    )
+}
+
+export default ProfilePage;

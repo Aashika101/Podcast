@@ -6,6 +6,7 @@ export default defineSchema({
         user: v.id('users'),
         podcastTitle: v.string(),
         podcastDescription: v.string(),
+        genre: v.string(),
         audioUrl: v.optional(v.string()),
         audioStorageId: v.optional(v.id('_storage')),
         imageUrl: v.optional(v.string()),
@@ -18,14 +19,12 @@ export default defineSchema({
         finalText: v.string(), 
         voiceTypes: v.optional(v.array(v.string())), 
         audioDuration: v.number(),
-        views: v.number(),
-        podcastGenre: v.string()
+        views: v.number()
     })
-
     .searchIndex('search_author', { searchField: 'author' })
     .searchIndex('search_title', { searchField: 'podcastTitle' })
-    .searchIndex('search_body', { searchField: 'podcastDescription' })
-    .searchIndex('search_genre', { searchField: 'podcastGenre' }),
+    .searchIndex('search_body', { searchField: 'podcastDescription'})
+    .searchIndex('search_genre', { searchField: 'genre' }),
     
     users: defineTable({
         email: v.string(),
@@ -37,6 +36,5 @@ export default defineSchema({
     tasks: defineTable({
         text: v.string(),
         isCompleted: v.boolean(),
-      })
-    
-})
+    })
+});

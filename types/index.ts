@@ -29,7 +29,6 @@ export interface PodcastProps {
   user: Id<"users">;
   podcastTitle: string;
   podcastDescription: string;
-  podcastGenre: string; 
   audioUrl: string | null;
   imageUrl: string | null;
   imageStorageId: Id<"_storage"> | null;
@@ -107,7 +106,6 @@ export interface AudioProps {
   author: string;
   imageUrl: string;
   podcastId: string;
-  genre: string;
 }
 
 export interface AudioContextType {
@@ -138,3 +136,6 @@ export type UseDotButtonType = {
   scrollSnaps: number[];
   onDotButtonClick: (index: number) => void;
 };
+
+
+

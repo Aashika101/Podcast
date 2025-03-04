@@ -7,8 +7,6 @@ import { Link, Loader } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, } from "@/components/ui/select";
-import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { Textarea } from "@/components/ui/textarea";
 import GeneratePodcast from "@/components/GeneratePodcast";
@@ -16,7 +14,7 @@ import GenerateThumbnail from "@/components/GenerateThumbnail";
 import { Id } from "@/convex/_generated/dataModel";
 import { genres, getVoicesForGenre } from "@/constants";
 import { useToast } from "@/hooks/use-toast";
-import { Authenticated, useMutation } from "convex/react";
+import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { useRouter } from "next/navigation";
 
@@ -93,22 +91,6 @@ const CreatePodcast = () => {
         return;
       }
 
-      console.log("Submitting data:", {
-        podcastTitle: data.podcastTitle,
-        podcastDescription: data.podcastDescription,
-        audioUrl,
-        imageUrl,
-        imagePrompt: imagePrompt || '',
-        audioDuration,
-        finalText: generatedText,
-        voicePrompt,
-        views: 0,
-        audioStorageId: audioStorageId!,
-        imageStorageId: imageStorageId!,
-        voiceTypes: genre ? getVoicesForGenre(genre) : [],
-      });
-
-      console.log("reached bloody here");
       const podcast = await createPodcast({
         podcastTitle: data.podcastTitle,
         podcastDescription: data.podcastDescription,
@@ -122,7 +104,7 @@ const CreatePodcast = () => {
         audioStorageId: audioStorageId!,
         imageStorageId: imageStorageId!,
         voiceTypes: genre ? getVoicesForGenre(genre) : [],
-        podcastGenre: generatedGenre,
+        genre : generatedGenre,
       });
 
       console.log("Podcast created:", podcast);
@@ -177,26 +159,6 @@ const CreatePodcast = () => {
                 <FormMessage className="text-white-1" />
               </FormItem>
             )} />
-            {/* <FormField control={form.control} name="podcastGenre" render={({ field }) => (
-              <FormItem className="flex flex-col gap-2.5">
-                <FormLabel className="text-16 font-bold text-white-1">Genre</FormLabel>
-                <FormControl>
-                  <Select onValueChange={(value) => { field.onChange(value); setGenre(value); }}>
-                    <SelectTrigger className={cn('text-16 w-full border-none focus-visible:ring-offset-red-1 bg-black-1 text-gray-1')}>
-                      <SelectValue placeholder="Select Genre" />
-                    </SelectTrigger>
-                    <SelectContent className="text-16 border-none bg-black-1 font-bold text-white-1 focus:ring-red-1">
-                      {genres.map((genre) => (
-                        <SelectItem key={genre} value={genre} className="capitalize focus:bg-red-1">
-                          {genre}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </FormControl>
-                <FormMessage className="text-white-1" />
-              </FormItem>
-            )} /> */}
           </div>
           <div className="flex flex-col pt-5">
             <GeneratePodcast

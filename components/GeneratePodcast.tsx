@@ -50,21 +50,19 @@ const useGeneratePodcast = ({
           console.log('Predicted Genre:', determinedGenre);
           setGenre(determinedGenre || genres[0]);
           genre = determinedGenre || genres[0]; // Ensure genre is set correctly
+          setGeneratedGenre && setGeneratedGenre(genre);
         } else {
           console.error('Failed to determine genre');
           setGenre(genres[0]);
           genre = genres[0];
           setGeneratedGenre && setGeneratedGenre(genre);
+          
         }
       }
 
       // Automatically select the voices based on the genre
       const selectedGenre = genre || genres[0]; 
       const selectedVoices = getVoicesForGenre(selectedGenre);
-
-      console.log('Genre:', genre);
-      console.log('Selected Genre:', selectedGenre);
-      console.log('Selected Voices:', selectedVoices);
 
       if (setVoiceTypes) {
         setVoiceTypes(selectedVoices); // Set the voices
@@ -107,7 +105,7 @@ const useGeneratePodcast = ({
 
       const audioUrl = await getAudioUrl({ storageId });
       setAudio(audioUrl!);
-      setGeneratedScript(''); // Clear the generated script
+      setGeneratedScript(''); 
       setIsGenerating(false);
       toast({
         title: "Podcast generated successfully",
