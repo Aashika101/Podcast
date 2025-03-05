@@ -29,7 +29,7 @@ const ProfilePage = ({
         <section className='mt-9 flex flex-col'>
             <h1 className='text-20 font-bold text-white-1'
             >Podcaster Profile</h1>
-            <div>
+            <div className='mt-6 flex flex-col gap-6 max-md:items-center md:flex-row'>
                 <ProfileCard 
                   podcastData={podcastsData!}
                   imageUrl={user?.imageUrl!}
@@ -38,8 +38,7 @@ const ProfilePage = ({
             </div>
             <section className='mt-9 flex flex-col gap-5'>
                 <h1 className='text-20 font-bold text-white-1'>All Podcasts</h1>
-                {podcastsData && podcastsData.podcasts.length 
-                > 0 ? (
+                {podcastsData && podcastsData.podcasts.length > 0 ? (
                     <div className='podcast_grid'>
                         {podcastsData?.podcasts 
                         ?.slice(0, 4)
@@ -50,13 +49,13 @@ const ProfilePage = ({
                               title={podcast.podcastTitle!}
                               description={podcast.podcastDescription!}
                               genre={podcast.genre}
-                              podcastId={podcast.id}
+                              podcastId={podcast._id}
                             />
                         ))}
                     </div>
                 ) : (
                     <EmptyState 
-                    title='You have not created any podcasts yet'
+                    title='No podcasts created yet'
                     buttonLink="/create-podcast"
                     />
                 )}

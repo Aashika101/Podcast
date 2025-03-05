@@ -4,6 +4,7 @@ import EmptyState from '@/components/EmptyState'
 import LoaderSpinner from '@/components/LoaderSpinner'
 import PodcastCard from '@/components/PodcastCard'
 import PodcastDetailPlayer from '@/components/PodcastDetailPlayer'
+
 import { api } from '@/convex/_generated/api'
 import { Id } from '@/convex/_generated/dataModel'
 import { useUser } from '@clerk/nextjs'
@@ -22,7 +23,6 @@ const PodcastDetails = ({ params: { podcastId } }: {
   const isOwner = user?.id === podcast?.authorId;
 
   if(!similarPodcasts || !podcast) return <LoaderSpinner />
-
 
 
   return (
@@ -47,9 +47,20 @@ const PodcastDetails = ({ params: { podcastId } }: {
       </header>
 
       <PodcastDetailPlayer
-      isOwner= {isOwner}
-      podcastId= {podcast._id}
-      {...podcast}
+      // isOwner= {isOwner}
+      // podcastId= {podcast._id}
+      // {...podcast}
+        isOwner={isOwner}
+        podcastId={podcast._id}
+        audioUrl={podcast.audioUrl || ""}
+        podcastTitle={podcast.podcastTitle}
+        author={podcast.author}
+        imageUrl={podcast.imageUrl || ""}
+        imageStorageId={podcast.imageStorageId!}
+        audioStorageId={podcast.audioStorageId!}
+        authorImageUrl={podcast.authorImageUrl}
+        authorId={podcast.authorId}
+        genre={podcast.genre}
       />
 
       <p className='text-white-2 text-16 pb-8 pt-[45px]
@@ -71,7 +82,7 @@ const PodcastDetails = ({ params: { podcastId } }: {
               {similarPodcasts?.map(({ _id, podcastTitle, podcastDescription, imageUrl, genre }) => (
               <PodcastCard
                key={_id}
-               imgUrl={imageUrl}
+               imgUrl={imageUrl || ""}
                title={podcastTitle}
                description={podcastDescription}
                genre={genre}
