@@ -5,6 +5,7 @@ import LoaderSpinner from "@/components/LoaderSpinner";
 import PodcastCard from "@/components/PodcastCard";
 import ProfileCard from "@/components/ProfileCard";
 import { api } from "@/convex/_generated/api";
+import { useUser } from "@clerk/nextjs";
 import { useQuery } from "convex/react";
 import React from "react";
 
@@ -15,6 +16,7 @@ const ProfilePage = ({
         profileId: string;
     };
 }) => {
+    const { user: loggedInUser } = useUser();
     const user = useQuery(api.users.getUserById, {
         clerkId: params.profileId,
     });
@@ -24,6 +26,8 @@ const ProfilePage = ({
     })
 
     if (!user || !podcastsData) return <LoaderSpinner />;
+
+    const isOwnProfile = loggedInUser?.id === params.profileId;
 
     return (
         <section className='mt-9 flex flex-col'>
@@ -55,8 +59,9 @@ const ProfilePage = ({
                     </div>
                 ) : (
                     <EmptyState 
-                    title='No podcasts created yet'
-                    buttonLink="/create-podcast"
+                      title='No podcasts created yet'
+                      buttonLink={isOwnProfile ? "/create-podcast" : "/"}
+                      buttonText={isOwnProfile ? "Create Podcast" : "Home"}
                     />
                 )}
             </section>

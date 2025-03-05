@@ -23,8 +23,8 @@ const RootLayout = ({
     <ConvexClerkProvider>
       <html lang="en">
         <AudioProvider>
-          <body className={manrope.className}>
-            {children}
+           <body className={`${manrope.className}`}>
+              {children}
           </body> 
         </AudioProvider>
       </html>

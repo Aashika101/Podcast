@@ -99,6 +99,7 @@ export interface PodcastDetailPlayerProps {
   authorImageUrl: string;
   authorId: string;
   genre: string;
+  views: number;
 }
 
 export interface AudioProps {
@@ -120,6 +121,7 @@ export interface PodcastCardProps {
   description: string;
   podcastId: Id<"podcasts">;
   genre: string;
+
 }
 
 export interface CarouselProps {
@@ -138,5 +140,10 @@ export type UseDotButtonType = {
   onDotButtonClick: (index: number) => void;
 };
 
-
+export type LatestPodcastsCardProps = {
+  _id: string;
+  podcastTitle: string;
+  imageUrl: string;
+  audioDuration: number;
+};
 

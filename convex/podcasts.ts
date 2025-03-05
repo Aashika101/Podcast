@@ -230,4 +230,12 @@ export const deletePodcast = mutation({
   }
 });
 
+export const getLatestPodcasts = query({
+  handler: async (ctx) => {
+    const podcasts = await ctx.db.query('podcasts').collect();
+
+    return podcasts.sort((a, b) => b._creationTime - a._creationTime).slice(0, 8);
+  }
+});
+
 

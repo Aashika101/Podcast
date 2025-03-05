@@ -33,8 +33,8 @@ const PodcastCard = ({
             font-bold text-white-1'>{title}</h1>
             <h2 className='text-12 truncate
             font-normal capitalize text-white-1'>{description}</h2>
-            <h3 className='text-12 truncate
-            font-normal capitalize text-white-1'>{genre}</h3>
+            <h5 className='text-12 truncate font-semibold capitalize text-black-2
+             bg-red-1 px-2 py-0.5 mt-1 rounded-full inline-block max-w-max max-h-max'>{genre}</h5>
           </div>
         </figure>
     </div>
