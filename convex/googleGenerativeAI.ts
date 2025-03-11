@@ -19,3 +19,16 @@ export const generatePodcastScript = async (prompt: string): Promise<string> => 
     throw new Error("Failed to generate podcast script");
   }
 };
+
+
+export const generatePodcastSummary = async (prompt: string): Promise<string> => {
+  try{
+   const result = await model.generateContent(`Summarize the followiung podcast content in 200 words without 
+    including the strengths, weaknesses, or suggestions: ${prompt}`);
+   const generatedSummary = await result.response.text();
+   return generatedSummary;
+  }catch (error) {
+    console.error("Error generating summary:", error);
+    throw new Error("Failed to generate podcast summary");
+  }
+}

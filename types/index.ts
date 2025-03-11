@@ -41,7 +41,6 @@ export interface PodcastProps {
   audioDuration: number;
   genre: string;
   views: number;
-  // finalText?: string;
 }
 
 export interface ProfilePodcastProps {

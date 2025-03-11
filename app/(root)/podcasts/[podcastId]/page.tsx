@@ -4,13 +4,14 @@ import EmptyState from '@/components/EmptyState'
 import LoaderSpinner from '@/components/LoaderSpinner'
 import PodcastCard from '@/components/PodcastCard'
 import PodcastDetailPlayer from '@/components/PodcastDetailPlayer'
-
+import { Button } from '@/components/ui/button'
 import { api } from '@/convex/_generated/api'
 import { Id } from '@/convex/_generated/dataModel'
+import { generatePodcastSummary } from '@/convex/googleGenerativeAI'
 import { useUser } from '@clerk/nextjs'
 import { useQuery } from 'convex/react'
 import Image from 'next/image'
-import React from 'react'
+import React, { useState } from 'react'
 
 const PodcastDetails = ({ params: { podcastId } }: { 
   params: { podcastId: Id<'podcasts'> } }) => {
@@ -21,8 +22,21 @@ const PodcastDetails = ({ params: { podcastId } }: {
   const similarPodcasts = useQuery(api.podcasts.getPodcastByVoiceTypes, { podcastId })
 
   const isOwner = user?.id === podcast?.authorId;
+  const [summary, setSummary] = useState<string | null>(null);
 
   if(!similarPodcasts || !podcast) return <LoaderSpinner />
+
+  const handleSummarize = async () => {
+    if (podcast?.finalText) {
+      const generatedSummary = await
+      generatePodcastSummary(podcast.finalText);
+      setSummary(generatedSummary);
+    }
+  };
+  
+  const handleCloseSummary = () => {
+    setSummary(null);
+  };
 
 
   return (
@@ -61,6 +75,7 @@ const PodcastDetails = ({ params: { podcastId } }: {
         authorImageUrl={podcast.authorImageUrl}
         authorId={podcast.authorId}
         genre={podcast.genre}
+        views={0}
       />
 
       <p className='text-white-2 text-16 pb-8 pt-[45px]
@@ -70,6 +85,20 @@ const PodcastDetails = ({ params: { podcastId } }: {
         <div className='flex flex-col gap-4'>
           <h1 className='text-18 font-bold text-white-1'>Transcription</h1>
           <p className='text-16 font-medium text-white-2'>{podcast?.finalText}</p>
+
+          <Button onClick={handleSummarize} className='mt-4 p-2 bg-red-1 text-black-1 text-16 font-bold rounded'>Summarize</Button>
+          {summary && (
+            <div className='relative mt-4 p-4 bg-black-5 text-white-1 rounded'>
+              <Button onClick={handleCloseSummary}
+              className='absolute top-2 right-2'>
+                <Image src='/icons/rightarrow.svg' 
+                width={20}
+                height={20}
+                alt='Close'></Image>
+              </Button>
+              <p className='text-16 font-medium'>{summary}</p>
+            </div>
+          )}
         </div>
       </div>
 
