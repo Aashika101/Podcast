@@ -13,9 +13,11 @@ import type {
   FilterApi,
   FunctionReference,
 } from "convex/server";
+import type * as downloadPodcast from "../downloadPodcast.js";
 import type * as files from "../files.js";
 import type * as googleGenerativeAI from "../googleGenerativeAI.js";
 import type * as http from "../http.js";
+import type * as mutations from "../mutations.js";
 import type * as openai from "../openai.js";
 import type * as podcasts from "../podcasts.js";
 import type * as tasks from "../tasks.js";
@@ -30,9 +32,11 @@ import type * as users from "../users.js";
  * ```
  */
 declare const fullApi: ApiFromModules<{
+  downloadPodcast: typeof downloadPodcast;
   files: typeof files;
   googleGenerativeAI: typeof googleGenerativeAI;
   http: typeof http;
+  mutations: typeof mutations;
   openai: typeof openai;
   podcasts: typeof podcasts;
   tasks: typeof tasks;

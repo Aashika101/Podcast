@@ -15,11 +15,10 @@ export const sidebarLinks = [
       label: "Create Podcast",
     },
     {
-      imgURL: "/icons/profile.svg",
-      route: "/profile",
-      label: "My Profile",
+      imgURL: "/icons/sidebardownload.svg",
+      route: "/download-podcast",
+      label: "Downloads",
     },
-  
 
   ];
 

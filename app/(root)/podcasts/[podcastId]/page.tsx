@@ -7,15 +7,20 @@ import PodcastDetailPlayer from '@/components/PodcastDetailPlayer'
 import { Button } from '@/components/ui/button'
 import { api } from '@/convex/_generated/api'
 import { Id } from '@/convex/_generated/dataModel'
+import { downloadPodcast } from '@/convex/downloadPodcast'
 import { generatePodcastSummary } from '@/convex/googleGenerativeAI'
+import { toast } from '@/hooks/use-toast'
+
 import { useUser } from '@clerk/nextjs'
-import { useQuery } from 'convex/react'
+import { useMutation, useQuery } from 'convex/react'
 import Image from 'next/image'
 import React, { useState } from 'react'
 
 const PodcastDetails = ({ params: { podcastId } }: { 
   params: { podcastId: Id<'podcasts'> } }) => {
   const { user } = useUser();
+
+  const updateDownloadedAudioUrl = useMutation(api.mutations.updateDownloadedAudioUrl);
 
   const podcast = useQuery(api.podcasts.getPodcastById, { podcastId })
 
@@ -38,6 +43,24 @@ const PodcastDetails = ({ params: { podcastId } }: {
     setSummary(null);
   };
 
+  const handleDownload = async () => {
+    try{
+      await downloadPodcast(podcast.audioUrl!, podcast._id, podcast.podcastTitle, podcast.imageUrl!, podcast.audioDuration);
+      await updateDownloadedAudioUrl({podcastId: podcast._id, downloadedAudioUrl: podcast.audioUrl!});
+      toast({
+        title: 'Podcast downloaded successfully',
+      });
+      console.log(`Podcast with ID ${podcast._id} downloaded sucessfully`)
+    } catch (error) {
+      toast({
+        title: 'Download Error',
+        description: 'Failed to download the podcast',
+        variant: 'destructive'
+      });
+      console.error(`Error downloading podcast with ID ${podcast._id}:`, error);
+    }
+  }
+
 
   return (
     <section className='flex w-full flex-col'>
@@ -57,6 +80,15 @@ const PodcastDetails = ({ params: { podcastId } }: {
         <h2 className='text-16 font-bold text-white-1'>
           {podcast?.views}
         </h2>
+
+        <Button onClick={handleDownload}>
+          <Image
+            src='/icons/download.svg'
+            width={24}
+            height={24}
+            alt='Download'>
+          </Image>
+        </Button>
       </figure>
       </header>
 
