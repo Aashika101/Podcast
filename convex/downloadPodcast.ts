@@ -34,3 +34,15 @@ export async function getAllDownloadedPodcasts() {
     console.log('Retrieved all downloaded podcasts from IndexedDB:', allPodcasts);
     return allPodcasts;
 }
+
+export async function deletePodcast(podcastId: string) {
+    try {
+        const db = await openDB('podcastDB', 1);
+        await db.delete('podcasts', podcastId);
+        console.log(`Podcast with ID ${podcastId} deleted successfully.`);
+    } catch (error) {
+        console.error(`Error deleting podcast with ID ${podcastId}:`, error);
+        throw error;
+    }
+}
+
