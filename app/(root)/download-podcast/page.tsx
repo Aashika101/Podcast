@@ -98,8 +98,12 @@ const DownloadedPodcastsPage = () => {
       ) : (
         <p>No downloaded podcasts found.</p>
       )}
+
     </section>
   );
 };
 
 export default DownloadedPodcastsPage;
+
+
+

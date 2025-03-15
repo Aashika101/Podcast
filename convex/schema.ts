@@ -37,5 +37,12 @@ export default defineSchema({
     tasks: defineTable({
         text: v.string(),
         isCompleted: v.boolean(),
-    })
+    }),
+
+    playlists: defineTable({
+        user: v.id('users'),
+        playlistName: v.string(),
+        podcasts: v.array(v.id('podcasts')),
+    }),
+    
 });

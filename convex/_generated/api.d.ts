@@ -19,6 +19,7 @@ import type * as googleGenerativeAI from "../googleGenerativeAI.js";
 import type * as http from "../http.js";
 import type * as mutations from "../mutations.js";
 import type * as openai from "../openai.js";
+import type * as playlists from "../playlists.js";
 import type * as podcasts from "../podcasts.js";
 import type * as tasks from "../tasks.js";
 import type * as users from "../users.js";
@@ -38,6 +39,7 @@ declare const fullApi: ApiFromModules<{
   http: typeof http;
   mutations: typeof mutations;
   openai: typeof openai;
+  playlists: typeof playlists;
   podcasts: typeof podcasts;
   tasks: typeof tasks;
   users: typeof users;

@@ -144,5 +144,8 @@ export type LatestPodcastsCardProps = {
   podcastTitle: string;
   imageUrl: string;
   audioDuration: number;
+  user: string;
+  onAddToPlaylist: (podcast: LatestPodcastCardProps, playlistName: string) => void;
 };
+
 

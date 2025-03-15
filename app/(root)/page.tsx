@@ -1,15 +1,16 @@
 "use client";
 
-import PodcastCard from '@/components/PodcastCard'
-import LatestPodcastCard from '@/components/LatestPodcastCard'
-import React from 'react'
-import { Authenticated, useQuery } from "convex/react";
+import PodcastCard from '@/components/PodcastCard';
+import LatestPodcastCard from '@/components/LatestPodcastCard';
+import React from 'react';
+import { Authenticated, useQuery, useMutation } from "convex/react";
 import { api } from '@/convex/_generated/api';
 import Link from 'next/link';
 
 const Home = () => {
   const trendingPodcasts = useQuery(api.podcasts.getTrendingPodcasts);
   const latestPodcasts = useQuery(api.podcasts.getLatestPodcasts);
+  const createPlaylist = useMutation(api.playlists.createPlaylist);
 
   // Sort and slice to get the three most recent podcasts
   const recentPodcasts = trendingPodcasts
@@ -19,6 +20,9 @@ const Home = () => {
   // Slice to get a maximum of 4 latest podcasts
   const latestPodcastsToShow = latestPodcasts?.slice(0, 4);
 
+  const handleAddToPlaylist = (podcastId, playlistName) => {
+    createPlaylist({ podcastId, playlistName });
+  };
 
   return (
     <Authenticated>
@@ -53,7 +57,8 @@ const Home = () => {
                   _id={_id}
                   podcastTitle={podcastTitle}
                   imageUrl={imageUrl!}
-                  audioDuration={(audioDuration)}
+                  audioDuration={audioDuration}
+                  onAddToPlaylist={handleAddToPlaylist}
                 />
                 <hr className='border-t border-black-5' />
               </React.Fragment>
@@ -63,6 +68,6 @@ const Home = () => {
       </div>
     </Authenticated>
   );
-}
+};
 
 export default Home;

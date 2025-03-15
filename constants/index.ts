@@ -19,6 +19,11 @@ export const sidebarLinks = [
       route: "/download-podcast",
       label: "Downloads",
     },
+    {
+      imgURL: "/icons/headphone.svg",
+      route: "/playlists",
+      label: "Playlists",
+    },
 
   ];
 
