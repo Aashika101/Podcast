@@ -3,7 +3,7 @@
 import PodcastCard from '@/components/PodcastCard';
 import LatestPodcastCard from '@/components/LatestPodcastCard';
 import React from 'react';
-import { Authenticated, useQuery, useMutation } from "convex/react";
+import { useQuery, useMutation } from "convex/react";
 import { api } from '@/convex/_generated/api';
 import Link from 'next/link';
 
@@ -20,12 +20,12 @@ const Home = () => {
   // Slice to get a maximum of 4 latest podcasts
   const latestPodcastsToShow = latestPodcasts?.slice(0, 4);
 
-  const handleAddToPlaylist = (podcastId, playlistName) => {
+  const handleAddToPlaylist = (podcastId, playlistName: string) => {
     createPlaylist({ podcastId, playlistName });
   };
 
   return (
-    <Authenticated>
+
       <div className='mt-9 flex-col gap-9'>
         <section className='flex flex-col gap-5'>
           <h1 className='text-20 font-bold text-white-1'>Trending Podcasts</h1>
@@ -66,7 +66,7 @@ const Home = () => {
           </div>
         </section>
       </div>
-    </Authenticated>
+
   );
 };
 

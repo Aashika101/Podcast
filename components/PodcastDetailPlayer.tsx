@@ -30,6 +30,7 @@ const PodcastDetailPlayer = ({
   const { toast } = useToast();
   const [isDeleting, setIsDeleting] = useState(false);
   const deletePodcast = useMutation(api.podcasts.deletePodcast);
+  const updatePodcastViews = useMutation(api.podcasts.updatePodcastViews);
 
   const handleDelete = async () => {
     try {
@@ -55,6 +56,7 @@ const PodcastDetailPlayer = ({
       author,
       podcastId,
     });
+    updatePodcastViews({ podcastId });
   };
 
   if (!imageUrl || !authorImageUrl) return <LoaderSpinner />;

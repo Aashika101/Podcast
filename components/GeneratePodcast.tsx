@@ -29,7 +29,6 @@ const useGeneratePodcast = ({
   const getAudioUrl = useMutation(api.podcasts.getUrl);
 
   const generatePodcast = async (finalText: string) => {
-    // return;
     setIsGenerating(true);
     setAudio('');
 

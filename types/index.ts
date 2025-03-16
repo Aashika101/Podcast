@@ -99,6 +99,7 @@ export interface PodcastDetailPlayerProps {
   authorId: string;
   genre: string;
   views: number;
+  onPlay: () => void;
 }
 
 export interface AudioProps {
