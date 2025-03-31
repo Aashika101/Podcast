@@ -29,6 +29,7 @@ const ProfilePage = ({
 
     const isOwnProfile = loggedInUser?.id === params.profileId;
 
+
     return (
         <section className='mt-9 flex flex-col'>
             <h1 className='text-20 font-bold text-white-1'

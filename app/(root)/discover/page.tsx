@@ -37,7 +37,7 @@ const Discover = ({ searchParams: { search } }: { searchParams : { search: strin
               </div>
             ) : <EmptyState title='No results found. Try adjusting your search to find what you are looking for'/>}
           </>
-        ) : <LoaderSpinner/>}
+        ) : <LoaderSpinner />}
       </div>
     </div>
   );

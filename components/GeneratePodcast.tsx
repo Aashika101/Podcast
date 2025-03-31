@@ -244,11 +244,13 @@ const GeneratePodcast = (props: GeneratePodcastProps) => {
           />
           <div className="absolute bottom-3 right-3 flex space-x-2">
             <CheckCircle
+              aria-label="apply improved text"
               size={25}
               className="text-green-600 bg-white transition-all duration-500 hover:bg-green-50 p-1 rounded-full cursor-pointer"
               onClick={applyImprovedText}
             />
             <XCircle
+              aria-label="discard improved text"
               size={25}
               className="text-red-600 bg-white transition-all duration-500 hover:bg-red-50 p-1 rounded-full cursor-pointer"
               onClick={discardImprovedText}

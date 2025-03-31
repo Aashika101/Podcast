@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { useMutation, useQuery } from 'convex/react';
-import { api } from '@/convex/_generated/api';
+import { api, } from '@/convex/_generated/api';
 import { Button } from '@/components/ui/button';
 import { deletePodcastFromPlaylist } from '@/convex/playlists';
 
@@ -54,7 +54,6 @@ const PlaylistsPage = () => {
                       <img src={podcast.imageUrl} width={50} height={50} alt={podcast.podcastTitle} className='rounded-lg' />
                       <div className='flex flex-col'>
                         <h2 className='text-16 font-bold text-white-1'>{podcast.podcastTitle}</h2>
-                        <span className='text-14 text-white-2'>{podcast.audioDuration} mins</span>
                         <audio controls>
                           <source src={podcast.audioUrl} type="audio/mpeg" />
                           Your browser does not support the audio element.

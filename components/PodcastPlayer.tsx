@@ -110,6 +110,7 @@ const PodcastPlayer = () => {
           ref={audioRef}
           src={audio?.audioUrl}
           className="hidden"
+          role="audio"
           onLoadedMetadata={handleLoadedMetadata}
           onEnded={handleAudioEnded}
         />
@@ -145,7 +146,7 @@ const PodcastPlayer = () => {
             src={isPlaying ? "/icons/Pause.svg" : "/icons/Play.svg"}
             width={30}
             height={30}
-            alt="play"
+            alt={isPlaying ? "pause" : "play"} 
             onClick={togglePlayPause}
           />
           <div className="flex items-center gap-1.5">
@@ -168,7 +169,7 @@ const PodcastPlayer = () => {
               src={isMuted ? "/icons/unmute.svg" : "/icons/mute.svg"}
               width={24}
               height={24}
-              alt="mute unmute"
+              alt={isMuted ? "unmute" : "mute"} 
               onClick={toggleMute}
               className="cursor-pointer"
             />

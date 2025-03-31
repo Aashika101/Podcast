@@ -1,6 +1,6 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
-const apiKey = process.env.NEXT_PUBLIC_GOOGLE_GENERATIVE_AI_KEY;
+const apiKey = process.env.NEXT_PUBLIC_GOOGLE_GENERATIVE_AI_KEY || "mock-api-key";
 
 if (!apiKey) {
   throw new Error("API key is not defined");
