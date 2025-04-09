@@ -34,6 +34,8 @@ describe("createUser Mutation", () => {    //The describe block defines a test s
       imageUrl: validUserData.imageUrl,
       name: validUserData.name,
     });
+    // Log success message
+    console.log("PASS: should create a user successfully with valid inputs");
   });
 
   it("should throw an error if the database insert fails", async () => {
@@ -51,5 +53,8 @@ describe("createUser Mutation", () => {    //The describe block defines a test s
 
     // Act & Assert: Call the mutation and expect it to throw an error
     await expect(createUser(mockCtx as any, invalidUserData)).rejects.toThrow("Database error");
+
+    // Log success message
+    console.log("PASS: should throw an error if the database insert fails");
   });
 });

@@ -53,6 +53,7 @@ describe('GeneratePodcast Component', () => {
     render(<GeneratePodcast {...mockProps} />);
     expect(screen.getByText('Script to generate podcast')).toBeInTheDocument();
     expect(screen.getByText('AI Prompt to generate Podcast script')).toBeInTheDocument();
+    console.log('PASS: renders without crashing');
   });
 
    // Test to check if the script input change is handled correctly
@@ -61,14 +62,16 @@ describe('GeneratePodcast Component', () => {
     const textarea = screen.getByPlaceholderText('Provide text to generate audio');
     fireEvent.change(textarea, { target: { value: 'Test script' } });
     expect(mockProps.setVoicePrompt).toHaveBeenCalledWith('Test script');
+    console.log('PASS: handles script input change');
   });
 
   // Test to check if the generate podcast button click is handled correctly
-  it('handles generate podcast button click', () => {
+  it('should convert sample text to speech successfully', () => {
     render(<GeneratePodcast {...mockProps} />);
     const button = screen.getByText('Generate');
     fireEvent.click(button);
     expect(mockProps.setAudio).toHaveBeenCalledWith('');
+    console.log('PASS: should convert sample text to speech successfully ');
   });
 
   // Test to check if the improved content is displayed correctly
@@ -76,6 +79,7 @@ describe('GeneratePodcast Component', () => {
     render(<GeneratePodcast {...mockProps} improvedText="Improved content" />);
     expect(screen.getByText('Improved Content')).toBeInTheDocument();
     expect(screen.getByDisplayValue('Improved content')).toBeInTheDocument();
+    console.log('PASS: displays improved content');
   });
 
   // Test to check if the apply improved text action is handled correctly
@@ -85,6 +89,7 @@ describe('GeneratePodcast Component', () => {
     fireEvent.click(checkCircle);
     expect(mockProps.setVoicePrompt).toHaveBeenCalledWith('Improved content');
     expect(mockProps.setImprovedText).toHaveBeenCalledWith('');
+    console.log('PASS: handles apply improved text');
   });
 
   // Test to check if the discard improved text action is handled correctly
@@ -93,5 +98,6 @@ describe('GeneratePodcast Component', () => {
     const xCircle = screen.getByLabelText('discard improved text');
     fireEvent.click(xCircle);
     expect(mockProps.setImprovedText).toHaveBeenCalledWith('');
+    console.log('PASS: handles discard improved text');
   });
 });

@@ -117,7 +117,7 @@ it("should handle the full workflow: text-to-speech, AI feedback, and playback",
     fireEvent.click(forwardButton);
   });
   expect(audioElement.currentTime).toBeGreaterThan(0); // Ensure forward works correctly
-
+  
   const muteButton = screen.getByAltText("mute");
   await act(async () => {
     fireEvent.click(muteButton);
